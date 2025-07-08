@@ -12,11 +12,33 @@ The repository is currently in initial setup phase. Based on the .gitignore file
 
 ## Expected Implementation
 
-The Dr. Quine project typically consists of three programs:
+The Dr. Quine project consists of three programs with specific requirements:
 
-1. **Colleen**: A simple quine that prints its own source code
-2. **Grace**: A quine that writes its source code to a file
-3. **Sully**: A quine that creates copies of itself with decreasing iteration counts
+### 1. **Colleen**: Basic quine that prints to stdout
+- Prints its own source code to standard output
+- **Mandatory requirements:**
+  - Must have a `main` function
+  - Must have 2 different comments:
+    - One comment INSIDE the main function
+    - One comment OUTSIDE the program
+  - Must have at least one additional function (besides main) that is called
+  
+### 2. **Grace**: File-writing quine
+- Creates a file named `Grace_kid.c` containing its own source code
+- **Mandatory requirements:**
+  - NO declared main function
+  - Exactly 3 #define statements only
+  - Exactly 1 comment
+  - Program runs by calling a macro
+
+### 3. **Sully**: Self-replicating quine with counter
+- Creates `Sully_X.c` where X is an integer
+- Compiles and executes the created file
+- **Mandatory requirements:**
+  - Integer starts at 5
+  - Each execution decrements the integer
+  - Stops when integer < 0
+  - Must compile and execute the generated files automatically
 
 ## Build Commands
 
@@ -57,3 +79,39 @@ To test the quines:
 - Quines are programs that reproduce their own source code
 - String escaping and proper formatting are crucial
 - The programs should handle their own source code as data within the program
+
+## Project Constraints
+
+**IMPORTANT: The following are considered cheating and are strictly prohibited:**
+- Reading the source file directly (e.g., using fopen to read the .c file)
+- Using argv/argc in any way
+- Any form of external data input
+
+**Additional Requirements:**
+- Programs must handle errors carefully and never crash unexpectedly (no segfaults, bus errors, double frees, etc.)
+- Must use C and Assembly (though validation is possible with C part only)
+- Each program must be in separate folders named C and ASM with their own Makefiles
+- Makefiles must contain usual rules and only recompile when necessary
+
+## CRITICAL IMPLEMENTATION RULES FOR CLAUDE
+
+**BEFORE implementing any quine solution, you MUST:**
+1. NEVER use `fopen()`, `open()`, or any file reading functions to read the source file
+2. NEVER use `argv[0]` or any command line arguments
+3. NEVER use `__FILE__` macro or similar preprocessor tricks to get the filename
+4. The quine must be self-contained - the source code must exist as a string within the program itself
+
+**Valid quine techniques include:**
+- Storing the program's source as a string literal within the program
+- Using printf with careful escaping to reproduce the source
+- Using macros and string manipulation to construct the output
+
+**Before writing any code, explicitly confirm:**
+- "I will not read any files"
+- "I will not use argv/argc"
+- "The source code will be embedded as data within the program"
+
+**Testing verification:**
+- Always test by compiling and running the program in a different directory
+- Ensure the program works even if the source file is deleted after compilation
+- The output must be byte-for-byte identical to the source file
